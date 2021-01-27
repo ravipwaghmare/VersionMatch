@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -17,6 +18,22 @@ func appendZeros(s string, zeros int) string {
 	return appendZeroString
 }
 
+func convertToString(alphaNumeric string) string {
+
+	newString := ""
+	for _, r := range alphaNumeric {
+		if int(r) >= 97 && int(r) <= 122 {
+			newString += string(strconv.Itoa(int(r)))
+		} else if int(r) >= 65 && int(r) <= 90 {
+			newString += string(strconv.Itoa(int(r)))
+		} else {
+			newString += string(int(r))
+		}
+	}
+
+	return newString
+}
+
 func main() {
 	// it will be  combination of minor version major version and actual version
 	for _, v := range [][3]string{
@@ -28,12 +45,12 @@ func main() {
 		{"1.003.0003.0", "6.001.05.0", "2.0002.01.05"},
 		{"5.06.05.0090", "6.02.80.020", "5.0006.05.05"},
 		{"2.600.500.90", "6.70.8.02", "5.0800.09.2"},
-		{"1.03.09.1", "2.006.004.02", "2.009.09.2"},
+		{"1.03.c9.1", "2.006.0d4.02", "2.009.09.2"},
 	} {
 		a, b, c := v[0], v[1], v[2]
-		minorVersion := appendZeros(a, 4)
-		majorVersion := appendZeros(b, 4)
-		hostVersion := appendZeros(c, 4)
+		minorVersion := appendZeros(convertToString(a), 8)
+		majorVersion := appendZeros(convertToString(b), 8)
+		hostVersion := appendZeros(convertToString(c), 8)
 
 		if minorVersion <= hostVersion && majorVersion >= hostVersion {
 			fmt.Println("Successful")
