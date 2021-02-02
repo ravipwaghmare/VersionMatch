@@ -22,9 +22,7 @@ func convertToString(alphaNumeric string) string {
 
 	newString := ""
 	for _, r := range alphaNumeric {
-		if int(r) >= 97 && int(r) <= 122 {
-			newString += string(strconv.Itoa(int(r)))
-		} else if int(r) >= 65 && int(r) <= 90 {
+		if int(r) >= 65 && int(r) <= 90 {
 			newString += string(strconv.Itoa(int(r)))
 		} else {
 			newString += string(int(r))
@@ -46,11 +44,13 @@ func main() {
 		{"5.06.05.0090", "6.02.80.020", "5.0006.05.05"},
 		{"2.600.500.90", "6.70.8.02", "5.0800.09.2"},
 		{"1.03.c9.1", "2.006.0d4.02", "2.009.09.2"},
+		{"1.03.00.00", "2.003.00.00", "1.003.01.00"},
+		{"1.03.00.00", "2.003.00.00", "2.03.00.00"},
 	} {
 		a, b, c := v[0], v[1], v[2]
-		minorVersion := appendZeros(convertToString(a), 8)
-		majorVersion := appendZeros(convertToString(b), 8)
-		hostVersion := appendZeros(convertToString(c), 8)
+		minorVersion := appendZeros(convertToString(strings.ToUpper(a)), 8)
+		majorVersion := appendZeros(convertToString(strings.ToUpper(b)), 8)
+		hostVersion := appendZeros(convertToString(strings.ToUpper(c)), 8)
 
 		if minorVersion <= hostVersion && majorVersion >= hostVersion {
 			fmt.Println("Successful")
